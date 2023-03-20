@@ -2,7 +2,7 @@
 using ApacheKafkaConsumer.Common.Extensions;
 using Microsoft.Extensions.Configuration;
 
-using IHost host = CreateHostBuilder(args).Build();
+using var host = CreateHostBuilder(args).Build();
 await host.RunAsync();
 
 static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -2,7 +2,7 @@ namespace ApacheKafkaProducer.Common.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Services;
 
-public static class IServiceCollectionExtensions
+internal static class ServiceCollectionExtensions
 {
     public static IServiceCollection ConfigureServices(this IServiceCollection services)
     {

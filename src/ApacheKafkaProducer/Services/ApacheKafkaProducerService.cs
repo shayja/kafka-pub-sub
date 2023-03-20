@@ -1,8 +1,8 @@
 namespace ApacheKafkaProducer.Services;
 using Confluent.Kafka;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Net;
-using Microsoft.Extensions.Configuration;
 
 public class ApacheKafkaProducerService : IApacheKafkaProducerService
 {
@@ -14,12 +14,12 @@ public class ApacheKafkaProducerService : IApacheKafkaProducerService
         this._topic = _configurationRoot.GetSection("Kafka:Topic").Get<string>()!;
     }
 
-    public async Task<bool> SendOrderRequest(string message)
+    public async Task<bool> SendOrderRequest(string message, CancellationToken cancellation)
     {
         if (string.IsNullOrEmpty(message)) throw new ArgumentNullException(nameof(message));
 
         Console.WriteLine($"SendOrderRequest: {message}");
-        ProducerConfig config = new ProducerConfig
+        var config = new ProducerConfig
         {
             BootstrapServers = _configurationRoot.GetSection("Kafka:BootstrapServers").Get<string>()!,
             ClientId = Dns.GetHostName()
@@ -27,20 +27,22 @@ public class ApacheKafkaProducerService : IApacheKafkaProducerService
 
         try
         {
-            using (var producer = new ProducerBuilder<Null, string>(config).Build())
-            {
-                var result = await producer.ProduceAsync(_topic, new Message<Null, string> { Value = message });
-                Console.WriteLine($"Delivery Timestamp: {result.Timestamp.UtcDateTime}");
-                //Console.WriteLine($"result: {System.Text.Json.JsonSerializer.Serialize(result)}");
-                return await Task.FromResult(true);
-            }
+            using var producer = new ProducerBuilder<Null, string>(config).Build();
+            var result = await producer.ProduceAsync(_topic, new Message<Null, string> { Value = message }, cancellation).ConfigureAwait(false);
+            Console.WriteLine($"Delivery Timestamp: {result.Timestamp.UtcDateTime}");
+            //Console.WriteLine($"result: {System.Text.Json.JsonSerializer.Serialize(result)}");
+            return await Task.FromResult(true).ConfigureAwait(false);
         }
-        catch (Exception ex)
+        catch (ProduceException<Null, string> ex)
         {
-            Console.WriteLine($"Error occured: {ex.Message}");
+            Console.WriteLine($"ProduceException occurred: {ex.Message}");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"ArgumentException occurred: {ex.Message}");
         }
 
-        return await Task.FromResult(false);
+        return await Task.FromResult(false).ConfigureAwait(false);
     }
 
 }
