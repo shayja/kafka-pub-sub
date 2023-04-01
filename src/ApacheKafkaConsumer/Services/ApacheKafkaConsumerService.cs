@@ -39,13 +39,21 @@ public class ApacheKafkaConsumerService : IHostedService
             {
                 while (true)
                 {
-                    var consumer = consumerBuilder.Consume(cancelToken.Token);
-                    var orderRequest = JsonSerializer.Deserialize<OrderProcessingRequest>(consumer.Message.Value);
-                    Console.WriteLine($"Processing Order Id: {orderRequest!.OrderId}");
+                    try
+                    {
+                        var consumer = consumerBuilder.Consume(cancelToken.Token);
+                        var orderRequest = JsonSerializer.Deserialize<OrderProcessingRequest>(consumer.Message.Value);
+                        Console.WriteLine($"Consumed message: Order Id: {orderRequest!.OrderId} at: '{consumer.TopicPartitionOffset}");
+                    }
+                    catch (ConsumeException e)
+                    {
+                        Console.WriteLine($"Error occured: {e.Error.Reason}");
+                    }
                 }
             }
             catch (OperationCanceledException)
             {
+                // Ensure the consumer leaves the group cleanly and final offsets are committed.
                 consumerBuilder.Close();
             }
         }

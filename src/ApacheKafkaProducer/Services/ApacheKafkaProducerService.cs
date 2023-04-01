@@ -29,7 +29,7 @@ public class ApacheKafkaProducerService : IApacheKafkaProducerService
         {
             using var producer = new ProducerBuilder<Null, string>(config).Build();
             var result = await producer.ProduceAsync(_topic, new Message<Null, string> { Value = message }, cancellation).ConfigureAwait(false);
-            Console.WriteLine($"Delivery Timestamp: {result.Timestamp.UtcDateTime}");
+            Console.WriteLine($"Delivered '{result.Value}' to '{result.TopicPartitionOffset}, Timestamp: {result.Timestamp.UtcDateTime}'");
             //Console.WriteLine($"result: {System.Text.Json.JsonSerializer.Serialize(result)}");
             return await Task.FromResult(true).ConfigureAwait(false);
         }
