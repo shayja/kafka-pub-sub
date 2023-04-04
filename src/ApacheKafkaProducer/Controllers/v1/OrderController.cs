@@ -1,13 +1,13 @@
-namespace ApacheKafkaProducer.Controllers;
+namespace ApacheKafkaProducer.Controllers.v1;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-
-[Route("api/v1/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion("1.0")]
 public class OrderController : ControllerBase
 {
 
@@ -17,6 +17,7 @@ public class OrderController : ControllerBase
         this._apacheKafkaProducerService = apacheKafkaProducerService ?? throw new ArgumentNullException(nameof(apacheKafkaProducerService));
     }
 
+    [MapToApiVersion("1.0")]
     [HttpPost]
     public async Task<IActionResult> CreateOrder(OrderRequest? orderRequest, CancellationToken cancellation = default)
     {

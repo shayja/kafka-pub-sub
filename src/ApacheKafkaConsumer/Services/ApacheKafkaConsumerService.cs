@@ -21,6 +21,7 @@ public class ApacheKafkaConsumerService : IHostedService
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
+        // Create the consumer configuration
         var config = new ConsumerConfig
         {
             GroupId = _configurationRoot.GetSection("Kafka:GroupId").Get<string>()!,
@@ -31,7 +32,9 @@ public class ApacheKafkaConsumerService : IHostedService
 
         try
         {
+            // Create the consumer
             using var consumerBuilder = new ConsumerBuilder<Ignore, string>(config).Build();
+            // Subscribe to the Kafka topic
             consumerBuilder.Subscribe(_topic);
             var cancelToken = new CancellationTokenSource();
 

@@ -1,4 +1,7 @@
 using ApacheKafkaProducer.Common.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
+
 // CA1852 Type 'Program' can be sealed because it has no subtypes in its containing assembly and is not externally visible
 #pragma warning disable CA1852
 var builder = WebApplication.CreateBuilder(args);
