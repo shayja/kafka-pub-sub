@@ -17,7 +17,7 @@ public class OrderController : ControllerBase
         this._apacheKafkaProducerService = apacheKafkaProducerService ?? throw new ArgumentNullException(nameof(apacheKafkaProducerService));
     }
 
-    [MapToApiVersion("1.0")]
+    //[MapToApiVersion("1.0")]
     [HttpPost]
     public async Task<IActionResult> CreateOrder(OrderRequest? orderRequest, CancellationToken cancellation = default)
     {
