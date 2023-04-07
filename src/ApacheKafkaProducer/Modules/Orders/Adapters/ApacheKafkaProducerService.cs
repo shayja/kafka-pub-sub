@@ -1,4 +1,4 @@
-namespace ApacheKafkaProducer.Services;
+namespace ApacheKafkaProducer.Modules.Orders.Adapters;
 
 public class ApacheKafkaProducerService : IApacheKafkaProducerService
 {

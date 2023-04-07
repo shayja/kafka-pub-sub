@@ -1,4 +1,4 @@
-namespace ApacheKafkaProducer.Services;
+namespace ApacheKafkaProducer.Modules.Orders.Ports;
 
 public interface IApacheKafkaProducerService
 {

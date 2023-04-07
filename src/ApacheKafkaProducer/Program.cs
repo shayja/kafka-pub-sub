@@ -15,8 +15,8 @@ Console.WriteLine($"WebRootPath: {builder.Environment.WebRootPath}");
 
 // Setup Services
 var app = builder.Build();
-
-app.ConfigureApp();
+app.ConfigureAppRouting();
+app.ConfigureAppMiddleware();
 
 // Start the Server
 app.Run();
