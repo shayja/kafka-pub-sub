@@ -1,9 +1,5 @@
 namespace ApacheKafkaProducer.Controllers.v1;
 using Microsoft.AspNetCore.Mvc;
-using Models;
-using Services;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]

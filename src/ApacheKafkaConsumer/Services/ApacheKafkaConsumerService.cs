@@ -1,13 +1,4 @@
 namespace ApacheKafkaConsumer.Services;
-using Confluent.Kafka;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Models;
-using System;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-
 
 public class ApacheKafkaConsumerService : IHostedService
 {

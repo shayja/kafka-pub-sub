@@ -1,11 +1,10 @@
 namespace ApacheKafkaProducer.Common.Extensions;
 
-using ApacheKafkaProducer.Common.Swagger;
+using Swagger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
-using Services;
 
 internal static class ServiceCollectionExtensions
 {
@@ -15,10 +14,12 @@ internal static class ServiceCollectionExtensions
         services.AddRouting(options => options.LowercaseUrls = true);
         services.ConfigureApiVersioning();
         services.ConfigureCors();
-        
+
 
         // Add the memory cache services.
         //services.AddMemoryCache();
+
+        // Add Middleware.
         ConfigureMiddleware(services);
         return services;
     }

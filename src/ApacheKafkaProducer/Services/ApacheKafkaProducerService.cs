@@ -1,8 +1,4 @@
 namespace ApacheKafkaProducer.Services;
-using Confluent.Kafka;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Net;
 
 public class ApacheKafkaProducerService : IApacheKafkaProducerService
 {

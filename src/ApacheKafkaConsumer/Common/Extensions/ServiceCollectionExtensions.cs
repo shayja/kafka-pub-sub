@@ -1,7 +1,4 @@
 namespace ApacheKafkaConsumer.Common.Extensions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Services;
 
 internal static class ServiceCollectionExtensions
 {

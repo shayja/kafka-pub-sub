@@ -1,5 +1,4 @@
 namespace ApacheKafkaProducer.Models;
-using System.ComponentModel.DataAnnotations;
 
 public record OrderRequest
 {

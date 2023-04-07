@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using ApacheKafkaConsumer.Common.Extensions;
-using Microsoft.Extensions.Configuration;
-
-using var host = CreateHostBuilder(args).Build();
+﻿using var host = CreateHostBuilder(args).Build();
 await host.RunAsync();
 
 static IHostBuilder CreateHostBuilder(string[] args) =>
