@@ -5,6 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.ConfigureServices();
 builder.Services.ConfigureModules();
+// Add services to the container.
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
+
 // Configure JSON logging to the console.
 //builder.Logging.AddJsonConsole();
 

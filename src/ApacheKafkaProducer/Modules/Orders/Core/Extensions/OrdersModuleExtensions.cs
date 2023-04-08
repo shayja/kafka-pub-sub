@@ -5,11 +5,13 @@ public static class OrdersModuleExtensions
 {
     public static RouteGroupBuilder MapOrderApi(this RouteGroupBuilder group)
     {
-        // group.MapGet("/", GetAllOrders);
-        // group.MapGet("/{id}", GetOrder);
+        group.MapGet("/", OrdersEndPoints.Get);
+        //group.MapPost("/", OrdersEndPoints.CreateAsync);
+
+        group.MapGet("/{id}", OrdersEndPoints.GetById);
         group.MapPost("/", OrdersEndPoints.CreateOrder);
-        // group.MapPut("/{id}", UpdateOrder);
-        // group.MapDelete("/{id}", DeleteOrder);
+        group.MapPut("/{id}", OrdersEndPoints.UpdateAsync);
+        //group.MapDelete("/{id}", DeleteOrder);
 
         return group;
     }

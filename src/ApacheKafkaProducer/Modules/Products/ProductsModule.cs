@@ -1,13 +1,12 @@
-namespace ApacheKafkaProducer.Modules.Orders;
+namespace ApacheKafkaProducer.Modules.Products;
 
-public class OrdersModule : IModule
+public class ProductsModule : IModule
 {
-    public string Name => "Order";
+    public string Name => "Product";
 
     public IServiceCollection RegisterModules(IServiceCollection services)
     {
-        services.AddSingleton<IOrderService, OrderService>();
-        services.AddSingleton<IApacheKafkaProducerService, ApacheKafkaProducerService>();
+        services.AddSingleton<IProductService, ProductsService>();
         return services;
     }
 
@@ -15,7 +14,7 @@ public class OrdersModule : IModule
     {
 
         endpoints.MapGroup($"api/v1/{Name.ToLower()}")
-            .MapOrderApi()
+            .MapProductApi()
             .WithTags(this.Name);
 
         return endpoints;
