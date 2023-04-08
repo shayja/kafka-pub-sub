@@ -1,6 +1,6 @@
 namespace ApacheKafkaProducer.Modules.Orders.Core.Domain;
 
-public record OrderRequest
+public record CreateUpdateOrderDto
 {
     public int OrderId { get; set; }
     public int ProductId { get; set; }
