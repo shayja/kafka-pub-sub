@@ -1,4 +1,4 @@
-namespace ApacheKafkaConsumer.Common.Extensions;
+namespace ApacheKafkaConsumer.Core.Extensions;
 
 internal static class ServiceCollectionExtensions
 {

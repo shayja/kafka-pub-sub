@@ -1,25 +1,19 @@
 namespace ApacheKafkaProducer.Modules.Orders;
-using ApacheKafkaProducer.Modules.Orders.EndPoints;
-public static class OrdersModule
+
+public class OrdersModule : IModule
 {
-    public static void MapOrdersEndpoints(this IEndpointRouteBuilder app)
+    public IServiceCollection RegisterModules(IServiceCollection services)
     {
-        app.MapGroup("api/v1/order")
+        services.AddSingleton<IApacheKafkaProducerService, ApacheKafkaProducerService>();
+        return services;
+    }
+
+    public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints)
+    {
+        endpoints.MapGroup("api/v1/order")
             .MapOrderApi()
             .WithTags("Order");
+
+        return endpoints;
     }
-
-    public static RouteGroupBuilder MapOrderApi(this RouteGroupBuilder group)
-    {
-        // group.MapGet("/", GetAllTodos);
-        // group.MapGet("/{id}", GetTodo);
-        group.MapPost("/", OrdersEndPoints.CreateOrder);
-        // group.MapPut("/{id}", UpdateTodo);
-        // group.MapDelete("/{id}", DeleteTodo);
-
-        return group;
-    }
-
-
-
 }

@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.ConfigureServices();
-
+builder.Services.ConfigureModules();
 // Configure JSON logging to the console.
 //builder.Logging.AddJsonConsole();
 
@@ -15,7 +15,7 @@ Console.WriteLine($"WebRootPath: {builder.Environment.WebRootPath}");
 
 // Setup Services
 var app = builder.Build();
-app.ConfigureAppRouting();
+app.MapEndpoints();
 app.ConfigureAppMiddleware();
 
 // Start the Server

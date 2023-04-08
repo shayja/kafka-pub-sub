@@ -1,4 +1,4 @@
-namespace ApacheKafkaProducer.Modules.Orders.Core;
+namespace ApacheKafkaProducer.Modules.Orders.Core.Domain;
 
 public record OrderRequest
 {
