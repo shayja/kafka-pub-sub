@@ -2,13 +2,12 @@ namespace ApacheKafkaProducer.Modules.Orders.EndPoints;
 
 public static class OrdersEndPoints
 {
-    internal static async Task<Results<BadRequest, Ok<bool>>> CreateOrder(CreateUpdateOrderDto? orderRequest, IApacheKafkaProducerService apacheKafkaProducerService, CancellationToken cancellation = default)
+    internal static async Task<Results<BadRequest, Ok<bool>>> CreateOrder(CreateUpdateOrderDto? orderRequest, IOrderService ordersService, CancellationToken cancellation = default)
     {
         if (orderRequest is null) return TypedResults.BadRequest(); //"Order is null"
         if (orderRequest.CustomerId is null) return TypedResults.BadRequest(); //$"OrderId {orderRequest.OrderId} is not valid"
-        var message = JsonSerializer.Serialize(orderRequest);
-        var res = await apacheKafkaProducerService.SendOrderRequest(message, cancellation).ConfigureAwait(false);
-        return TypedResults.Ok(res);
+        await ordersService.CreateAsync(orderRequest);
+        return TypedResults.Ok(true);
     }
 
     internal static async Task<Results<NotFound, Ok<List<Order>>>> Get(IOrderService ordersService)

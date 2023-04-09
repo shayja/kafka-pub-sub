@@ -3,13 +3,17 @@ namespace ApacheKafkaProducer.Modules.Orders.Adapters;
 public class OrderService : IOrderService
 {
     private readonly IMongoCollection<Order> _ordersCollection;
+    private readonly IApacheKafkaProducerService _apacheKafkaProducerService;
+    private bool _useQueue = false;
 
-    public OrderService(IOptions<DatabaseSettings> databaseSettings)
+    public OrderService(IOptions<DatabaseSettings> databaseSettings, IApacheKafkaProducerService apacheKafkaProducerService)
     {
         if (databaseSettings.Value is null) throw new ArgumentNullException(nameof(databaseSettings));
         var mongoClient = new MongoClient(databaseSettings.Value.ConnectionString);
         var mongoDatabase = mongoClient.GetDatabase(databaseSettings.Value.DatabaseName);
         _ordersCollection = mongoDatabase.GetCollection<Order>("orders");
+        _apacheKafkaProducerService = apacheKafkaProducerService ?? throw new ArgumentNullException(nameof(apacheKafkaProducerService));
+        _useQueue = databaseSettings.Value.UseQueue;
     }
 
     public async Task<List<Order>> GetAsync() =>
@@ -17,6 +21,35 @@ public class OrderService : IOrderService
 
     public async Task<Order?> GetAsync(string id) =>
         await _ordersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+
+    public async Task CreateAsync(CreateUpdateOrderDto orderRequest, CancellationToken cancellation = default)
+    {
+        if (_useQueue)
+        {
+            var message = JsonSerializer.Serialize(orderRequest);
+            await _apacheKafkaProducerService.SendOrderRequest(message, cancellation).ConfigureAwait(false);
+            return;
+        }
+
+        var order = new Order
+        {
+            AddressId = orderRequest.AddressId!,
+            CustomerId = orderRequest.CustomerId,
+            ShippingCost = orderRequest.ShippingCost,
+            Status = OrderStatus.AwaitingPayment,
+            SupplyMethod = (SupplyMethod)orderRequest.SupplyMethod!,
+            TotalPrice = orderRequest.TotalPrice,
+            LineItems = orderRequest.LineItems.Select(x => new OrderLineItem
+            {
+                ProductId = x.ProductId,
+                Quantity = x.Quantity,
+                ShippingPrice = x.ShippingPrice,
+                UnitPrice = x.UnitPrice,
+                TotalPrice = x.TotalPrice
+            }).ToList()
+        };
+        await CreateAsync(order);
+    }
 
     public async Task CreateAsync(Order newOrder) =>
         await _ordersCollection.InsertOneAsync(newOrder);
