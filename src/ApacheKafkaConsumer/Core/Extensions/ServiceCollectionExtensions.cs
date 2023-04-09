@@ -11,6 +11,7 @@ internal static class ServiceCollectionExtensions
 
     private static void ConfigureMiddleware(IServiceCollection services)
     {
+        services.AddJsonConventions();
         services.AddSingleton<IHostedService, ApacheKafkaConsumerService>();
     }
 }

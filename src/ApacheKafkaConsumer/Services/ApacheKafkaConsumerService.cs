@@ -18,7 +18,6 @@ public class ApacheKafkaConsumerService : IHostedService
             GroupId = _configurationRoot.GetSection("Kafka:GroupId").Get<string>()!,
             BootstrapServers = _configurationRoot.GetSection("Kafka:BootstrapServers").Get<string>()!,
             AutoOffsetReset = AutoOffsetReset.Earliest,
-
         };
 
         try
