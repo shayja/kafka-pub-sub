@@ -8,6 +8,7 @@ public record CreateUpdateOrderDto
     public string? AddressId { get; set; }
     public decimal ShippingCost { get; set; }
     public decimal TotalPrice { get; set; }
+    public int? Status { get; set; }
     public int? SupplyMethod { get; set; }
     public List<OrderLineItemDto> LineItems { get; set; } = null!;
 }

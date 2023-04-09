@@ -4,10 +4,12 @@ public class ApacheKafkaConsumerService : IHostedService
 {
     private readonly string _topic;
     private readonly IConfigurationRoot _configurationRoot;
-    public ApacheKafkaConsumerService(IConfiguration configurationRoot)
+    private readonly IOrderService _orderService;
+    public ApacheKafkaConsumerService(IConfiguration configurationRoot, IOrderService orderService)
     {
         this._configurationRoot = (IConfigurationRoot)configurationRoot ?? throw new ArgumentNullException(nameof(configurationRoot));
         this._topic = configurationRoot.GetSection("Kafka:Topic").Get<string>()!;
+        this._orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -30,13 +32,23 @@ public class ApacheKafkaConsumerService : IHostedService
 
             try
             {
-                while (true)
+                while (!cancellationToken.IsCancellationRequested)
                 {
                     try
                     {
                         var consumer = consumerBuilder.Consume(cancelToken.Token);
-                        var orderRequest = JsonSerializer.Deserialize<OrderProcessingRequest>(consumer.Message.Value);
-                        Console.WriteLine($"Consumed message: Order Id: {orderRequest?.Id} at: '{consumer.TopicPartitionOffset}");
+                        var messageAsString = consumer.Message.Value;
+                        var orderRequest = JsonSerializer.Deserialize<Order>(messageAsString);
+                        if (orderRequest is null)
+                        {
+                            Console.WriteLine($"orderRequest is null");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Consumed message: Order: {messageAsString} at: '{consumer.TopicPartitionOffset}");
+                            Task.Run(async () => await this._orderService.CreateAsync(orderRequest));
+                        }
+
                     }
                     catch (ConsumeException e)
                     {

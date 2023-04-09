@@ -5,7 +5,7 @@ public static class OrdersEndPoints
     internal static async Task<Results<BadRequest, Ok<bool>>> CreateOrder(CreateUpdateOrderDto? orderRequest, IApacheKafkaProducerService apacheKafkaProducerService, CancellationToken cancellation = default)
     {
         if (orderRequest is null) return TypedResults.BadRequest(); //"Order is null"
-        if (orderRequest.Id is null) return TypedResults.BadRequest(); //$"OrderId {orderRequest.OrderId} is not valid"
+        if (orderRequest.CustomerId is null) return TypedResults.BadRequest(); //$"OrderId {orderRequest.OrderId} is not valid"
         var message = JsonSerializer.Serialize(orderRequest);
         var res = await apacheKafkaProducerService.SendOrderRequest(message, cancellation).ConfigureAwait(false);
         return TypedResults.Ok(res);

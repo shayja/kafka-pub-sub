@@ -3,6 +3,7 @@ global using System;
 global using System.Text.Json;
 global using System.Threading;
 global using System.Threading.Tasks;
+global using ApacheKafkaConsumer.Core.Domain;
 global using ApacheKafkaConsumer.Core.Extensions;
 global using ApacheKafkaConsumer.Models;
 global using ApacheKafkaConsumer.Services;
