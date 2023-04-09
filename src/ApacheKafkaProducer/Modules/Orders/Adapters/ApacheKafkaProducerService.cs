@@ -28,7 +28,13 @@ public class ApacheKafkaProducerService : IApacheKafkaProducerService
         try
         {
             // Create the producer
-            using var producer = new ProducerBuilder<Null, string>(config).Build();
+            using var producer = new ProducerBuilder<Null, string>(config)
+            // Error handler
+            .SetErrorHandler((_, e) =>
+            {
+                Console.WriteLine($"Kafka Error {e.Code}: {e.Reason}");
+            })
+            .Build();
             var result = await producer.ProduceAsync(_topic, new Message<Null, string> { Value = message }, cancellation).ConfigureAwait(false);
 
             Console.WriteLine($"Delivered {result.Value} on Partition: {result.Partition} with Offset: {result.Offset} to {result.TopicPartitionOffset}, Timestamp: {result.Timestamp.UtcDateTime}");
@@ -37,11 +43,11 @@ public class ApacheKafkaProducerService : IApacheKafkaProducerService
         }
         catch (ProduceException<Null, string> ex)
         {
-            Console.WriteLine($"ProduceException occurred: {ex.Message}");
+            Console.WriteLine($"ProduceException occurred: {ex.Error.Reason}");
         }
         catch (ArgumentException ex)
         {
-            Console.WriteLine($"ArgumentException occurred: {ex.Message}");
+            Console.WriteLine($"ProduceException ArgumentException occurred: {ex.Message}");
         }
 
         return await Task.FromResult(false).ConfigureAwait(false);
