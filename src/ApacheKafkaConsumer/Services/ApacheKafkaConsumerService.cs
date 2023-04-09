@@ -37,11 +37,11 @@ public class ApacheKafkaConsumerService : IHostedService
                     {
                         var consumer = consumerBuilder.Consume(cancelToken.Token);
                         var orderRequest = JsonSerializer.Deserialize<OrderProcessingRequest>(consumer.Message.Value);
-                        Console.WriteLine($"Consumed message: Order Id: {orderRequest!.OrderId} at: '{consumer.TopicPartitionOffset}");
+                        Console.WriteLine($"Consumed message: Order Id: {orderRequest?.Id} at: '{consumer.TopicPartitionOffset}");
                     }
                     catch (ConsumeException e)
                     {
-                        Console.WriteLine($"Error occured: {e.Error.Reason}");
+                        Console.WriteLine($"Error occurred: {e.Error.Reason}");
                     }
                 }
             }

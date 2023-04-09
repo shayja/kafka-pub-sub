@@ -1,5 +1,4 @@
 namespace ApacheKafkaProducer.Core.Extensions;
-using MongoDB.Bson;
 
 internal static class MongoDbExtensions
 {

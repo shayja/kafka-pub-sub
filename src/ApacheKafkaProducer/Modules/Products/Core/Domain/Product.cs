@@ -1,6 +1,4 @@
 namespace ApacheKafkaProducer.Modules.Products.Core.Domain;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
 public class Product
 {

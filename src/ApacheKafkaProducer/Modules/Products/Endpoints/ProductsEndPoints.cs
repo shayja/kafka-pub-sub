@@ -1,11 +1,11 @@
 namespace ApacheKafkaProducer.Modules.Products.EndPoints;
 
-public static partial class ProductsEndPoints
+public static class ProductsEndPoints
 {
     internal static async Task<Results<NotFound, Ok<List<Product>>>> Get(IProductService productsService)
     {
         var list = await productsService.GetAsync();
-        if (list is null || !list.Any()) return TypedResults.NotFound();
+        if (!list.Any()) return TypedResults.NotFound();
         return TypedResults.Ok(list);
     }
 

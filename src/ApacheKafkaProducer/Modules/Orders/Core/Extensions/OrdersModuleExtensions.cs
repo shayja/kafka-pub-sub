@@ -1,5 +1,4 @@
 namespace ApacheKafkaProducer.Modules.Orders.Core.Extensions;
-using EndPoints;
 
 public static class OrdersModuleExtensions
 {

@@ -1,5 +1,4 @@
 namespace ApacheKafkaProducer.Modules.Products.Adapters;
-using MongoDB.Driver;
 
 public class ProductsService : IProductService
 {
@@ -7,9 +6,9 @@ public class ProductsService : IProductService
 
     public ProductsService(IOptions<DatabaseSettings> databaseSettings)
     {
-        if (databaseSettings?.Value is null) throw new ArgumentNullException(nameof(databaseSettings));
-        var mongoClient = new MongoClient(databaseSettings.Value.ConnectionString);
-        var mongoDatabase = mongoClient.GetDatabase(databaseSettings.Value.DatabaseName!);
+        if (databaseSettings.Value is null) throw new ArgumentNullException(nameof(databaseSettings));
+        var mongoDbClient = new MongoClient(databaseSettings.Value.ConnectionString);
+        var mongoDatabase = mongoDbClient.GetDatabase(databaseSettings.Value.DatabaseName);
         _productsCollection = mongoDatabase.GetCollection<Product>("products");
     }
 

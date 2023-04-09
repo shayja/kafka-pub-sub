@@ -1,5 +1,4 @@
 namespace ApacheKafkaProducer.Core.Extensions;
-using Microsoft.OpenApi.Models;
 
 internal static class SwaggerExtensions
 {

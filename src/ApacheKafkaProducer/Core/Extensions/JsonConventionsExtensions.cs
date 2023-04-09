@@ -1,6 +1,4 @@
 namespace ApacheKafkaProducer.Core.Extensions;
-using System.Text.Json.Serialization;
-using MongoDB.Bson.Serialization.Conventions;
 
 internal static class JsonConventionsExtensions
 {

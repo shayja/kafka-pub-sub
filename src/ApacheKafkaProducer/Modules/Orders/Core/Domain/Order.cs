@@ -1,6 +1,4 @@
 namespace ApacheKafkaProducer.Modules.Orders.Core.Domain;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
 public class Order
 {
