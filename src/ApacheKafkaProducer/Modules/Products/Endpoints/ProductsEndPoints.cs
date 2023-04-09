@@ -21,9 +21,9 @@ public static class ProductsEndPoints
         await productsService.CreateAsync(newProduct);
 
     internal static async Task UpdateAsync(string id, Product updatedProduct, IProductService productsService) =>
-          await productsService.UpdateAsync(id, updatedProduct);
+        await productsService.UpdateAsync(id, updatedProduct);
 
     internal static async Task RemoveAsync(string id, IProductService productsService) =>
-              await productsService.RemoveAsync(id);
+        await productsService.RemoveAsync(id);
 
 }

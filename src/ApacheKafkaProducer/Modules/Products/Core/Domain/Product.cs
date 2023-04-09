@@ -1,6 +1,6 @@
 namespace ApacheKafkaProducer.Modules.Products.Core.Domain;
 
-public class Product
+public class Product : EntityBase
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
