@@ -2,10 +2,10 @@ namespace ApacheKafkaProducer.Modules.Addresses.EndPoints;
 
 public static class AddressesEndPoints
 {
-    internal static async Task<Results<NotFound, BadRequest, Ok<List<Address>>>> Get(string id, IAddressService addressService)
+    internal static async Task<Results<NotFound, BadRequest, Ok<List<Address>>>> Get(string customerId, IAddressService addressService)
     {
-        if (!id.IdValidObjectId()) return TypedResults.BadRequest();
-        var list = await addressService.GetAsync(id);
+        if (!customerId.IdValidObjectId()) return TypedResults.BadRequest();
+        var list = await addressService.GetAsync(customerId);
         if (!list.Any()) return TypedResults.NotFound();
         return TypedResults.Ok(list);
     }
