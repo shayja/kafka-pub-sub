@@ -22,13 +22,13 @@ public class OrderService : IOrderService
     public async Task<Order?> GetAsync(string id) =>
         await _ordersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-    public async Task CreateAsync(CreateUpdateOrderDto orderRequest, CancellationToken cancellation = default)
+    public async Task<Order?> CreateAsync(CreateUpdateOrderDto orderRequest, CancellationToken cancellation = default)
     {
         if (_useQueue)
         {
             var message = JsonSerializer.Serialize(orderRequest);
             await _apacheKafkaProducerService.SendOrderRequest(message, cancellation).ConfigureAwait(false);
-            return;
+            return null;
         }
 
         var order = new Order
@@ -49,6 +49,7 @@ public class OrderService : IOrderService
             }).ToList()
         };
         await CreateAsync(order);
+        return order;
     }
 
     public async Task CreateAsync(Order newOrder) =>
